@@ -1,0 +1,405 @@
+/* Section de contact */
+.contact-section {
+  padding: 4rem 2rem;
+  background-color: #0a0a0a;
+  color: #fff;
+  width: 100%;
+  box-sizing: border-box;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Conteneur d'u00e9toiles pour l'arriu00e8re-plan */
+.stars-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.star {
+  position: absolute;
+  background-color: #fff;
+  border-radius: 50%;
+  opacity: 0.6;
+  animation: twinkle var(--duration, 5s) infinite alternate;
+}
+
+@keyframes twinkle {
+  0% {
+    opacity: 0.2;
+    transform: scale(0.8);
+  }
+  100% {
+    opacity: 0.8;
+    transform: scale(1.2);
+  }
+}
+
+/* Conteneur principal du formulaire */
+.contact-container {
+  max-width: 800px;
+  margin: 0 auto;
+  width: 100%;
+  padding: 3rem;
+  background-color: rgba(20, 20, 20, 0.8);
+  backdrop-filter: blur(10px);
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  position: relative;
+  z-index: 2;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Titre de la section */
+.contact-title {
+  font-size: 2.5rem;
+  text-align: center;
+  margin-bottom: 2.5rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  position: relative;
+  color: #fff;
+}
+
+.contact-title:after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 3px;
+  background-color: #fff;
+}
+
+/* Barre de progression */
+.form-progress {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 2.5rem;
+  position: relative;
+}
+
+.form-progress:before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 70%;
+  height: 2px;
+  background-color: rgba(255, 255, 255, 0.2);
+  z-index: 1;
+}
+
+.progress-step {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 15px;
+  position: relative;
+  z-index: 2;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  color: rgba(255, 255, 255, 0.6);
+  border: 2px solid transparent;
+}
+
+.progress-step.active {
+  background-color: rgba(20, 206, 255, 0.2);
+  color: #fff;
+  border-color: #14CEFF;
+}
+
+.progress-step.current {
+  background-color: #14CEFF;
+  color: #fff;
+  transform: scale(1.1);
+  box-shadow: 0 0 15px rgba(20, 206, 255, 0.5);
+}
+
+/* Formulaire de contact */
+.contact-form {
+  position: relative;
+  transition: transform 0.5s ease, opacity 0.5s ease;
+}
+
+.contact-form.animating {
+  transform: translateX(50px);
+  opacity: 0;
+}
+
+.form-step {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.step-title {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  color: #fff;
+  font-weight: 600;
+}
+
+/* Inputs flottants */
+.floating-input,
+.floating-textarea {
+  position: relative;
+  margin-bottom: 1.5rem;
+}
+
+.floating-input input,
+.floating-textarea textarea {
+  width: 100%;
+  padding: 1.2rem 1rem 0.5rem;
+  background-color: rgba(255, 255, 255, 0.05);
+  border: none;
+  border-radius: 8px;
+  color: #fff;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  z-index: 1;
+  position: relative;
+}
+
+.floating-input label,
+.floating-textarea label {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: rgba(255, 255, 255, 0.6);
+  pointer-events: none;
+  transition: all 0.3s ease;
+  z-index: 2;
+}
+
+.floating-textarea label {
+  top: 1.2rem;
+  transform: none;
+}
+
+.floating-input.focused label,
+.floating-textarea.focused label {
+  top: 0.5rem;
+  left: 1rem;
+  font-size: 0.75rem;
+  color: #14CEFF;
+}
+
+.floating-input input:focus,
+.floating-textarea textarea:focus {
+  outline: none;
+  background-color: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 0 0 2px rgba(20, 206, 255, 0.3);
+}
+
+.input-highlight {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: #14CEFF;
+  transition: width 0.3s ease;
+}
+
+.floating-input.focused .input-highlight,
+.floating-textarea.focused .input-highlight {
+  width: 100%;
+}
+
+.floating-textarea textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+/* Options de sujet et de formule */
+.subject-options,
+.plan-options {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.subject-option,
+.plan-option {
+  background-color: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 1.5rem 1rem;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.subject-option:hover,
+.plan-option:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  transform: translateY(-5px);
+}
+
+.subject-option.selected,
+.plan-option.selected {
+  background-color: rgba(20, 206, 255, 0.2);
+  border-color: #14CEFF;
+  box-shadow: 0 0 15px rgba(20, 206, 255, 0.3);
+}
+
+.option-icon {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.option-label {
+  font-weight: 500;
+}
+
+/* Navigation du formulaire */
+.form-navigation {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1.5rem;
+}
+
+.form-button {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  border: none;
+  padding: 0.8rem 1.5rem;
+  border-radius: 30px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.form-button:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-3px);
+}
+
+.form-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.next-button,
+.submit-button {
+  background-color: #14CEFF;
+}
+
+.next-button:hover,
+.submit-button:hover {
+  background-color: #0fa8d2;
+  box-shadow: 0 5px 15px rgba(20, 206, 255, 0.3);
+}
+
+.button-icon {
+  font-size: 1.2rem;
+}
+
+/* u00c9tape de succu00e8s */
+.success-step {
+  text-align: center;
+  padding: 2rem 0;
+}
+
+.success-icon {
+  font-size: 4rem;
+  color: #14CEFF;
+  margin-bottom: 1.5rem;
+  animation: success-pulse 2s infinite;
+}
+
+@keyframes success-pulse {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.success-title {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  color: #fff;
+}
+
+.success-message {
+  color: rgba(255, 255, 255, 0.8);
+  margin-bottom: 2rem;
+  font-size: 1.1rem;
+}
+
+.reset-button {
+  background-color: #14CEFF;
+  margin: 0 auto;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .contact-container {
+    padding: 2rem 1.5rem;
+  }
+  
+  .subject-options,
+  .plan-options {
+    grid-template-columns: 1fr;
+  }
+  
+  .form-progress {
+    margin-bottom: 2rem;
+  }
+  
+  .progress-step {
+    width: 30px;
+    height: 30px;
+    margin: 0 10px;
+    font-size: 0.9rem;
+  }
+  
+  .form-navigation {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .form-button {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .prev-button {
+    order: 2;
+  }
+  
+  .next-button,
+  .submit-button {
+    order: 1;
+  }
+}
