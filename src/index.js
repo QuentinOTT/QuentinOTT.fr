@@ -10,6 +10,7 @@ import Scene3 from './Scene3'
 import Projects from './Projects'
 import Pricing from './Pricing'
 import Contact from './Contact'
+import Footer from './Footer'
 
 import "./base.css"
 
@@ -88,6 +89,8 @@ function Body() {
         <Pricing />
         {/* Contact section added below the pricing section */}
         <Contact />
+        {/* Footer added below the contact section */}
+        <Footer />
       </main>
     </Router>
     </>

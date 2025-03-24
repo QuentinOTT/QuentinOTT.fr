@@ -233,17 +233,168 @@
 
 @media (max-width: 768px) {
   .pricing-grid {
-    grid-template-columns: 1fr;
-    max-width: 400px;
+    display: none; /* Cacher la grille sur mobile */
+  }
+  
+  /* Styles pour le carrousel */
+  .pricing-carousel-container {
+    width: 100%;
+    max-width: 350px;
+    margin: 0 auto 60px auto;
+    position: relative;
+  }
+  
+  .pricing-carousel {
+    display: block;
+    position: relative;
+    width: 100%;
+    min-height: 550px;
+  }
+  
+  .carousel-item {
+    display: none; /* Cacher toutes les cartes par défaut */
+    width: 100%;
     margin: 0 auto;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  
+  .carousel-item.active {
+    display: block; /* Afficher uniquement la carte active */
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    animation: cardFadeIn 0.6s ease forwards;
+  }
+  
+  @keyframes cardFadeIn {
+    0% {
+      opacity: 0;
+      transform: translateY(20px) scale(0.95);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+  
+  /* Styles pour les contrôles du carrousel */
+  .carousel-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    margin-top: 30px;
+  }
+  
+  .carousel-control {
+    background-color: #FF0000;
+    color: white;
+    border: none;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(255, 0, 0, 0.3);
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .carousel-control:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0) 70%);
+    transform: scale(0);
+    opacity: 0;
+    transition: transform 0.5s ease, opacity 0.5s ease;
+  }
+  
+  .carousel-control:hover {
+    background-color: #CC0000;
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 0 6px 12px rgba(255, 0, 0, 0.4);
+  }
+  
+  .carousel-control:active:before {
+    transform: scale(3);
+    opacity: 0.5;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+  }
+  
+  .carousel-indicators {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .carousel-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.3);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .carousel-dot:after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, rgba(255,0,0,0.7) 0%, rgba(255,0,0,0) 70%);
+    opacity: 0;
+    transform: scale(0);
+    transition: transform 0.5s ease, opacity 0.5s ease;
+  }
+  
+  .carousel-dot.active {
+    background-color: #FF0000;
+    transform: scale(1.2);
+    box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+  }
+  
+  .carousel-dot.active:after {
+    opacity: 0.5;
+    transform: scale(2);
+    animation: pulseEffect 2s infinite;
+  }
+  
+  @keyframes pulseEffect {
+    0% {
+      opacity: 0.5;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 0.2;
+      transform: scale(2);
+    }
+    100% {
+      opacity: 0.5;
+      transform: scale(1);
+    }
+  }
+  
+  /* Ajustements pour les cartes dans le carrousel */
+  .pricing-card {
+    transform: none !important;
+    margin-bottom: 0;
   }
   
   .pricing-card.popular {
-    transform: scale(1);
-    order: -1;
-  }
-  
-  .pricing-card.popular.hovered {
-    transform: translateY(-15px);
+    transform: none !important;
+    order: initial;
   }
 }

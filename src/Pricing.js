@@ -1,8 +1,36 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import './Pricing.css'
 
 function Pricing() {
   const [hoveredCard, setHoveredCard] = useState(null);
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
+  const carouselRef = useRef(null);
+
+  // Détecter si l'appareil est un mobile
+  useEffect(() => {
+    const checkIfMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    
+    checkIfMobile();
+    window.addEventListener('resize', checkIfMobile);
+    
+    return () => {
+      window.removeEventListener('resize', checkIfMobile);
+    };
+  }, []);
+
+  // Ajuster la hauteur du carrousel en fonction de la carte active
+  useEffect(() => {
+    if (isMobile && carouselRef.current) {
+      // Laisser le CSS gérer la hauteur pour plus de simplicité
+      setTimeout(() => {
+        // Force re-render après un court délai pour garantir que tout est bien chargé
+        setCurrentSlide(prev => prev);
+      }, 100);
+    }
+  }, [isMobile]);
 
   // Générer des étoiles pour l'arrière-plan
   const [stars, setStars] = useState([])
@@ -25,6 +53,33 @@ function Pricing() {
     generateStars()
   }, [])
 
+  // Fonction pour naviguer vers la slide précédente
+  const prevSlide = () => {
+    setCurrentSlide((prev) => {
+      const newSlide = prev === 0 ? pricingPlans.length - 1 : prev - 1;
+      return newSlide;
+    });
+  };
+
+  // Fonction pour naviguer vers la slide suivante
+  const nextSlide = () => {
+    setCurrentSlide((prev) => {
+      const newSlide = prev === pricingPlans.length - 1 ? 0 : prev + 1;
+      return newSlide;
+    });
+  };
+  
+  // Effet pour défiler automatiquement les slides toutes les 10 secondes
+  useEffect(() => {
+    if (isMobile) {
+      const interval = setInterval(() => {
+        nextSlide();
+      }, 10000); // Ralenti à 10 secondes au lieu de 5
+      
+      return () => clearInterval(interval);
+    }
+  }, [isMobile]); // Dépendance uniquement sur isMobile pour éviter les re-rendus inutiles
+
   // Données des formules de prix
   const pricingPlans = [
     {
@@ -39,8 +94,9 @@ function Pricing() {
         'Hébergement pour 1 an',
         'Maintenance mensuelle',
         'Tableau de bord admin',
+        'Mentions légales'
       ],
-      color: '#14CEFF',
+      color: '#33179C',
       icon: '💻',
       popular: false
     },
@@ -59,6 +115,7 @@ function Pricing() {
         'Maintenance mensuelle',
         'Tableau de bord admin',
         'Support 24/7',
+        'Mentions légales',
       ],
       color: '#f70131',
       icon: '🚀',
@@ -79,6 +136,7 @@ function Pricing() {
         'Maintenance prioritaire',
         'Formation utilisateur',
         'Support 7j/7',
+        'Mentions légales',
       ],
       color: '#921212',
       icon: '🖥️',
@@ -90,33 +148,80 @@ function Pricing() {
     <section className="pricing-section">
       <div className="pricing-container">
         <h2 className="pricing-title">Formules de<br/>Prestations</h2>
-        <div className="pricing-grid">
-          {pricingPlans.map(plan => (
-            <div 
-              className={`pricing-card ${plan.popular ? 'popular' : ''} ${hoveredCard === plan.id ? 'hovered' : ''}`}
-              key={plan.id}
-              onMouseEnter={() => setHoveredCard(plan.id)}
-              onMouseLeave={() => setHoveredCard(null)}
-              style={{
-                '--card-color': plan.color,
-                '--card-shadow-color': `${plan.color}40`
-              }}
-            >
-              {plan.popular && <div className="popular-badge">Populaire</div>}
-              <div className="pricing-icon">{plan.icon}</div>
-              <h3 className="pricing-plan-title">{plan.title}</h3>
-              <div className="pricing-price">{plan.price}</div>
-              <ul className="pricing-features">
-                {plan.features.map((feature, index) => (
-                  <li key={index} className="pricing-feature">
-                    <span className="feature-check">✓</span> {feature}
-                  </li>
-                ))}
-              </ul>
-              <button className="pricing-button">Sélectionner</button>
+        
+        {isMobile ? (
+          <div className="pricing-carousel-container">
+            <div className="pricing-carousel" ref={carouselRef}>
+              {pricingPlans.map((plan, index) => (
+                <div 
+                  className={`pricing-card carousel-item ${plan.popular ? 'popular' : ''} ${index === currentSlide ? 'active' : ''}`}
+                  key={plan.id}
+                  style={{
+                    '--card-color': plan.color,
+                    '--card-shadow-color': `${plan.color}40`
+                  }}
+                  // Ajouter un data-index pour faciliter le débogage
+                  data-index={index}
+                >
+                  {plan.popular && <div className="popular-badge">Populaire</div>}
+                  <div className="pricing-icon">{plan.icon}</div>
+                  <h3 className="pricing-plan-title">{plan.title}</h3>
+                  <div className="pricing-price">{plan.price}</div>
+                  <ul className="pricing-features">
+                    {plan.features.map((feature, index) => (
+                      <li key={index} className="pricing-feature">
+                        <span className="feature-check">✓</span> {feature}
+                      </li>
+                    ))}
+                  </ul>
+                  <button className="pricing-button">Sélectionner</button>
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
+            
+            <div className="carousel-controls">
+              <button className="carousel-control prev" onClick={prevSlide}>←</button>
+              <div className="carousel-indicators">
+                {pricingPlans.map((_, index) => (
+                  <span 
+                    key={index} 
+                    className={`carousel-dot ${index === currentSlide ? 'active' : ''}`}
+                    onClick={() => setCurrentSlide(index)}
+                  />
+                ))}
+              </div>
+              <button className="carousel-control next" onClick={nextSlide}>→</button>
+            </div>
+          </div>
+        ) : (
+          <div className="pricing-grid">
+            {pricingPlans.map(plan => (
+              <div 
+                className={`pricing-card ${plan.popular ? 'popular' : ''} ${hoveredCard === plan.id ? 'hovered' : ''}`}
+                key={plan.id}
+                onMouseEnter={() => setHoveredCard(plan.id)}
+                onMouseLeave={() => setHoveredCard(null)}
+                style={{
+                  '--card-color': plan.color,
+                  '--card-shadow-color': `${plan.color}40`
+                }}
+              >
+                {plan.popular && <div className="popular-badge">Populaire</div>}
+                <div className="pricing-icon">{plan.icon}</div>
+                <h3 className="pricing-plan-title">{plan.title}</h3>
+                <div className="pricing-price">{plan.price}</div>
+                <ul className="pricing-features">
+                  {plan.features.map((feature, index) => (
+                    <li key={index} className="pricing-feature">
+                      <span className="feature-check">✓</span> {feature}
+                    </li>
+                  ))}
+                </ul>
+                <button className="pricing-button">Sélectionner</button>
+              </div>
+            ))}
+          </div>
+        )}
         <div className="pricing-note">
           <span className="pricing-note-icon">⚠️</span>
           <span className="pricing-note-text">Les tarifs sont négociables selon le volume et la complexité du projet.</span>
