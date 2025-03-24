@@ -85,7 +85,8 @@ function Pricing() {
     {
       id: 1,
       title: 'Essentiel',
-      price: '699€',
+      price: '499€',
+      originalPrice: '699€',
       features: [
         'Site vitrine responsive',
         'Jusqu\'à 5 pages',
@@ -98,7 +99,8 @@ function Pricing() {
       ],
       color: '#33179C',
       icon: '💻',
-      popular: false
+      popular: false,
+      promotion: true
     },
     {
       id: 2,
@@ -166,7 +168,15 @@ function Pricing() {
                   {plan.popular && <div className="popular-badge">Populaire</div>}
                   <div className="pricing-icon">{plan.icon}</div>
                   <h3 className="pricing-plan-title">{plan.title}</h3>
-                  <div className="pricing-price">{plan.price}</div>
+                  {plan.promotion && (
+                    <div className="promotion-badge">
+                      <span className="promotion-text">Promotion</span>
+                    </div>
+                  )}
+                  <div className="pricing-price-container">
+                    {plan.originalPrice && <div className="original-price">{plan.originalPrice}</div>}
+                    <div className="current-price">{plan.price}</div>
+                  </div>
                   <ul className="pricing-features">
                     {plan.features.map((feature, index) => (
                       <li key={index} className="pricing-feature">
@@ -209,7 +219,15 @@ function Pricing() {
                 {plan.popular && <div className="popular-badge">Populaire</div>}
                 <div className="pricing-icon">{plan.icon}</div>
                 <h3 className="pricing-plan-title">{plan.title}</h3>
-                <div className="pricing-price">{plan.price}</div>
+                {plan.promotion && (
+                  <div className="promotion-badge">
+                    <span className="promotion-text">Promotion</span>
+                  </div>
+                )}
+                <div className="pricing-price-container">
+                  {plan.originalPrice && <div className="original-price">{plan.originalPrice}</div>}
+                  <div className="current-price">{plan.price}</div>
+                </div>
                 <ul className="pricing-features">
                   {plan.features.map((feature, index) => (
                     <li key={index} className="pricing-feature">

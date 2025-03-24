@@ -55,7 +55,7 @@ function Projects() {
       description: 'Création d un site vitrine pour un escadron de l armée de l air qui est en veille.',
       image: '/images/avion.png',
       technologies: ['React Native', 'html', 'javascript'],
-      creationlink: true
+      link: 'https://avion-escadrille.onrender.com'
     },
     {
       id: 5,
@@ -111,7 +111,7 @@ function Projects() {
                     </button>
                   ) : (
                     <button className="project-link" disabled>
-                      Projet en local (disponible sous demandes)
+                      Projet en local (disponible sur demandes)
                     </button>
                   )}
                 </div>
